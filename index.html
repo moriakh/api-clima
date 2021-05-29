@@ -29,7 +29,6 @@
             let latitude = 0;
             let longitude = 0;
             navigator.geolocation.getCurrentPosition(function(data){
-                console.log(data);
                 latitude = data.coords.latitude.toFixed(2);
                 longitude = data.coords.longitude.toFixed(2);
                 $('#latitud').html(`${latitude}`);
@@ -49,7 +48,6 @@
             $('#geo').on('click',function(){
                 $.get('https://api.openweathermap.org/data/2.5/weather?lat='+latitude+'&lon='+longitude+'&appid=bd9cef659a5d7626b3fc587588d44ae9', function(data){
                     weather(data);
-                    console.log(data);
                 }, 'json');
             })
         });
@@ -64,7 +62,7 @@
     <div class="container">
         <div class="row p-3">
             <hr>
-            <div class="col">
+            <div class="col-3">
                 Tu geolocalización actual es
             </div>
             <div class="col">
@@ -95,7 +93,7 @@
                         Ciudad:
                     </label>  
                         <input type="text" id="city">
-                        <input type="submit" value="Consultar" class="btn btn-primary m-2">
+                        <input type="submit" value="Consultar" class="btn btn-primary m-3">
                     </form>
             </div>
             <div class="col">
