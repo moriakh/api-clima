@@ -37,6 +37,10 @@
             });
             $('form').submit(function(){
                 let location = $('#city').val();
+                if (location==""){
+                    alert("Ingrese una ciudad");
+                    return false;
+                }
                 $.get('http://api.openweathermap.org/data/2.5/weather?q='+location+',cl&&appid=bd9cef659a5d7626b3fc587588d44ae9',function(data){
                     weather(data);
                 }, 'json');
@@ -75,25 +79,29 @@
                 <span id=longitud></span>
             </div>
             <div class="col">
-                <button id="geo" class="btn btn-secondary mb-2">Consultar por geolocalización</button>
+                <button id="geo" class="btn btn-secondary mb-3">Consultar por geolocalización</button>
             </div>
             <hr>
-            <h1>Ingresa la ciudad para consultar el tiempo en Chile</h1>
+            <h1>Ingresa la ciudad para conocer el tiempo en Chile</h1>
         </div>
+
+        
         <div class="row p-3">
             <hr>
-            <p>
+            <div class="col">
                 <form>
-                <label for="city">
-                    Ciudad:
-                </label>  
-                    <input type="text" id="city">
-                    <input type="submit" value="Consultar" class="btn btn-primary">
-                </form>
-            </p>
+                    <label for="city">
+                        Ciudad:
+                    </label>  
+                        <input type="text" id="city">
+                        <input type="submit" value="Consultar" class="btn btn-primary m-2">
+                    </form>
+            </div>
+            <div class="col">
+                <p id="city-weather"></p>
+                <p id="city-temperature"></p>
+            </div>
             <hr>
-            <p id="city-weather"></p>
-            <p id="city-temperature"></p>
         </div>
     </div>
 </body>
