@@ -11,43 +11,89 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){
-            $('form').submit(function(){
-                let location = $('#city').val();
-                $.get('http://api.openweathermap.org/data/2.5/weather?q='+location+',cl&&appid=bd9cef659a5d7626b3fc587588d44ae9',function(data){
-                    console.log(data);
+            function weather(data){
+                    let temperature = (data.main.temp - 273).toFixed(2);
+                    let maxtemperature = (data.main.temp_max - 273).toFixed(2);
+                    let mintemperature = (data.main.temp_min - 273).toFixed(2);
                     $('#city-weather').html(
                         `
                         ${data.name} : ${data.weather[0].main} 
                         `
                     );
-                    let temperature = Math.round((data.main.temp - 273)*100)/100;
-                    let maxtemperature = Math.round((data.main.temp_max - 273)*100)/100;
-                    let mintemperature = Math.round((data.main.temp_min - 273)*100)/100;
                     $('#city-temperature').html(
                         `
-                        Temperatura: ${temperature}, Máxima: ${maxtemperature}, Mínmima: ${mintemperature}
+                        Temperatura: ${temperature}, Máxima: ${maxtemperature}, Mínima: ${mintemperature}
                         `
                     );
+            }
+            let latitude = 0;
+            let longitude = 0;
+            navigator.geolocation.getCurrentPosition(function(data){
+                console.log(data);
+                latitude = data.coords.latitude.toFixed(2);
+                longitude = data.coords.longitude.toFixed(2);
+                $('#latitud').html(`${latitude}`);
+                $('#longitud').html(`${longitude}`);
+            });
+            $('form').submit(function(){
+                let location = $('#city').val();
+                $.get('http://api.openweathermap.org/data/2.5/weather?q='+location+',cl&&appid=bd9cef659a5d7626b3fc587588d44ae9',function(data){
+                    weather(data);
                 }, 'json');
                 return false;
             });
+            $('#geo').on('click',function(){
+                $.get('http://api.openweathermap.org/data/2.5/weather?lat='+latitude+'&lon='+longitude+'&appid=bd9cef659a5d7626b3fc587588d44ae9', function(data){
+                    weather(data);
+                }, 'json');
+            })
         });
     </script>
+    <style>
+        .container{
+            background-color: rgba(69, 112, 230, 0.685);
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <hr>
-        <h1>Ingresa la ciudad para conocer el tiempo climatológico</h1>
-        <div class="row">
+        <div class="row p-3">
+            <hr>
+            <div class="col">
+                Tu geolocalización actual es
+            </div>
+            <div class="col">
+                <h5>Latitud:</h5>
+            </div>
+            <div class="col">
+                <span id=latitud></span>
+            </div>  
+            <div class="col">
+                <h5>Longitud:</h5>
+            </div>  
+            <div class="col">
+                <span id=longitud></span>
+            </div>
+            <div class="col">
+                <button id="geo" class="btn btn-secondary mb-3">Consultar por geolocalización</button>
+            </div>
+            <hr>
+            <h1>Ingresa la ciudad para consultar el tiempo en Chile</h1>
+        </div>
+
+        
+        <div class="row p-3">
+            <hr>
             <p>
                 <form>
                 <label for="city">
                     Ciudad:
                 </label>  
                     <input type="text" id="city">
-                    <input type="submit" value="Consultar">
+                    <input type="submit" value="Consultar" class="btn btn-primary">
                 </form>
             </p>
+            <hr>
             <p id="city-weather"></p>
             <p id="city-temperature"></p>
         </div>
