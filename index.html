@@ -41,14 +41,15 @@
                     alert("Ingrese una ciudad");
                     return false;
                 }
-                $.get('http://api.openweathermap.org/data/2.5/weather?q='+location+',cl&&appid=bd9cef659a5d7626b3fc587588d44ae9',function(data){
+                $.get('https://api.openweathermap.org/data/2.5/weather?q='+location+',cl&&appid=bd9cef659a5d7626b3fc587588d44ae9',function(data){
                     weather(data);
                 }, 'json');
                 return false;
             });
             $('#geo').on('click',function(){
-                $.get('http://api.openweathermap.org/data/2.5/weather?lat='+latitude+'&lon='+longitude+'&appid=bd9cef659a5d7626b3fc587588d44ae9', function(data){
+                $.get('https://api.openweathermap.org/data/2.5/weather?lat='+latitude+'&lon='+longitude+'&appid=bd9cef659a5d7626b3fc587588d44ae9', function(data){
                     weather(data);
+                    console.log(data);
                 }, 'json');
             })
         });
